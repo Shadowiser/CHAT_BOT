@@ -1,13 +1,24 @@
 import customtkinter as ctk
+import os
+from dotenv import load_dotenv
+load_dotenv()
+import google.generativeai as genai
+ #config ia
+api_key = os.getenv("MY_API_KEY")
+
+
+genai.configure(api_key=api_key)
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+
+
 
 #fonction de réponse du chatbot
 
 def chatbot_response(user_input):
-    responses = {
-        "bonjour" : "Bonjour comment puis-je aider ?",
-        "cv" : "Oui cv bien"
-    }
-    return responses.get(user_input.lower(), "Désolé je ne comprends pas la question")
+    response = model.generate_content(user_input)
+    return response.text
 
 #fonction envoyer le message
 def send_message(event=None):
